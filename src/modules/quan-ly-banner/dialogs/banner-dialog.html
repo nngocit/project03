@@ -1,0 +1,78 @@
+<template>
+  <style>
+    ux-dialog-overlay.active {
+      background-color: black;
+      opacity: .5;
+    }
+
+  </style>
+  <ux-dialog>
+    <ux-dialog-body>
+      <!--<h2>${getTieuDe}</h2>
+      <form submit.delegate="save()">
+        <div class="form-group">
+          <label>Img</label>
+          <input type="text" class="form-control" value.bind="bannerDto.Img & validate">
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select class="form-control" value.bind="bannerDto.Status & validate">
+            <option value="">--selection--</option>
+            <option value="Active">Active</option>
+            <option value="Disable">Disable</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Note</label>
+          <br>
+          <select class="form-control" select2 value.bind="bannerDto.Note & validate">
+            <option model.bind="item.login" repeat.for="item of users">${item.login}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Position</label>
+          <input type="number" class="form-control" value.bind="bannerDto.Position & validate">
+        </div>
+        <button class="btn btn-primary" type="submit">Lưu</button>
+        <button class="btn btn-warning" click.trigger="dialogcontroller.cancel()">Hủy</button>
+      </form>-->
+
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header"><h5 class="modal-title" id="exampleModalLabel">${getTieuDe}</h5>
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true" click.trigger="dialogcontroller.cancel()"> ×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              
+              <div class="form-group"><label for=""> Email address</label><input class="form-control"
+                                                                                 placeholder="Enter email" type="email">
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group"><label for=""> Password</label><input class="form-control" placeholder="Password"
+                                                                                type="password"></div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group"><label for="">Confirm Password</label><input class="form-control"
+                                                                                       placeholder="Password"
+                                                                                       type="password"></div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" click.trigger="dialogcontroller.cancel()"> Close</button>
+            <button class="btn btn-primary" type="button"> Save changes</button>
+          </div>
+        </div>
+      </div>
+
+
+    </ux-dialog-body>
+  </ux-dialog>
+
+
+</template>

@@ -1,0 +1,209 @@
+<template>
+
+
+
+  <div class="element-box">
+    <h5 class="form-header">Điều kiện tìm kiếm</h5>
+
+    <form class="formFilter">
+
+      <div class="formFilter-block">
+
+        <div class="form-group">
+
+          <label>ID Comment</label>
+          <input type="text" class="form-control" value.bind="filter.where.CommentId">
+
+        </div>
+        <div class="form-group">
+          <label>Sản Phẩm</label>
+          <input type="text" class="form-control" value.bind="filter.where.TenSanPham">
+        </div>
+        <div class="form-group">
+          <label>Người Comment</label>
+          <input type="text" class="form-control" value.bind="filter.where.NguoiComment">
+        </div>
+
+
+
+
+      </div>
+
+
+      <div class="formFilter-block">
+
+        <div class="form-group">
+          <label>Loại Comment</label>
+          <select select2 id="TrangThaiCommentid" class="full-width box-select" value.bind="filter.where.loaicmt"  change.trigger="loaiLv1()">
+                                <option value="">Tất cả </option>
+                                <option value="-1">Chưa phân loại</option>
+                                <option repeat.for="item of listLoaiCmt" value.bind="item.Id">${item.TenLoaiComment}</option>
+                                </select>
+        </div>
+
+        <div class="form-group">
+          <label>Loại Comment Trực Thuộc (Cấp 1)</label>
+          <select class="form-control" value.bind="filter.where.loaicmtlv1" change.trigger="loaiLv2()">
+                                     <option value="">Tất cả </option>
+                                 <option repeat.for="item of listLoaicmtlv1" value.bind="item.Id">${item.TenLoaiComment}</option>
+                              </select>
+        </div>
+
+        <div class="form-group">
+          <label>Loại Comment Trực Thuộc (Cấp 2)</label>
+          <select class="form-control" value.bind="filter.where.loaicmtlv2">
+                                <option value="">Tất cả </option>
+                                <option repeat.for="item of listLoaicmtlv2" value.bind="item.Id">${item.TenLoaiComment}</option>
+                              </select>
+        </div>
+
+      </div>
+
+
+      <div class="formFilter-block">
+
+        <div class="form-group">
+          <label>Nhân Viên CS Tiếp Nhận</label>
+          <select class="form-control" value.bind="filter.where.MaNVCSTiepNhan">
+                                <option value="">Tất cả </option>
+                                 <option repeat.for="item of nhanVienCS" value.bind="item.MaNV" >${item.TenNV}</option>
+                                </select>
+        </div>
+
+        <div class="form-group">
+
+          <label>Nhân Viên SO Tiếp Nhận</label>
+          <select class="form-control" value.bind="filter.where.MaNVSOTiepNhan">
+                                <option value="">Tất cả </option>
+                                 <option repeat.for="item of nhanVienSO" value.bind="item.MaNV" >${item.TenNV}</option>
+                                </select>
+        </div>
+
+        <div class="form-group">
+
+          <label>Ngày Comment</label>
+
+          <div class="input-daterange input-group" daterangepickter>
+            <input type="text" class="input-sm form-control" name="start" value.bind="filter.where.ngayBatDau" datepicker>
+            <span class="input-group-addon">Đến</span>
+            <input type="text" class="input-sm form-control" name="end" value.bind="filter.where.ngayKetThuc" datepicker>
+          </div>
+        </div>
+      </div>
+
+      <div class="formFilter-block">
+        <div class="form-group">
+          <label>Trạng Thái Comment</label>
+          <select class="form-control" value.two-way="filter.where.filterTrangThaiComment">
+                                <option value="">Tất cả </option>
+                                <option value="-1">Comment Chưa đóng</option>
+                                <option value="0">------------- </option>
+                                <option repeat.for="item of ttComment" value.bind="item.Id">${item.TenTrangThai}</option>
+                                </select>
+        </div>
+
+
+        <div class="form-group">
+          <label>Trạng Thái Đánh giá</label>
+          <select class="form-control" value.bind="filter.where.ttdg">
+                                <option value="">Tất cả </option>
+                                <option repeat.for="item of ttDanhGia" value.bind="item.Id">${item.TenTrangThai}</option>
+                                </select>
+        </div>
+
+
+
+      </div>
+
+      <div class="formFilter-block-search">
+
+        <button data-loading-text="Loading" btn-async="task.call:runFilter()" class="btn btn-primary mb-2" type="submit"><i class="fa fa-search"></i> Tìm kiếm
+          </button>
+
+      </div>
+
+
+    </form>
+  </div>
+
+  <div class="element-box">
+    <h5 class="form-header">Kết quả tìm kiếm
+
+      <!-- <a class="btn btn-sm btn-primary ml-2 " href="#" click.delegate="runCreate()">Tạo mới Banner</a> -->
+
+      <a class="btn btn-sm btn-success ml-2 " href="#" click.delegate="runCreate()">Xuất Excel</a>
+
+    </h5>
+
+
+    <loader async-task.bind="asyncTask">
+      <table class="table table-hover" aurelia-table="data.bind: Listitems; display-data.bind: $displayData; ">
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Id</th>
+            <th>Ngày</th>
+            <th>Người comment</th>
+            <th>Nội dung</th>
+            <th>Nhân viên CS</th>
+            <th>Thời gian trả lời</th>
+            <th>Trạng thái</th>
+            <th>Thời gian warning</th>
+            <th class="text-center" style="width: 85px">Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat.for="item of $displayData">
+            <td> ${(pageSize-1)*pageSize+$index+1}</td>
+            <td> ${item.Comment.Id}</td>
+            <td>${item.Comment.NgayGioTao} </td>
+            <!-- <td>${item.Comment.LoaiCommentLevel1Id.TenLoaiComment|formatLoaicmt:item.Comment.LoaiCommentLevel1Id.TenLoaiComment:item.Comment.LoaiCommentLevel2Id.TenLoaiComment:item.Comment.LoaiCommentLevel3Id.TenLoaiComment:item.Comment.LoaiCommentLevel4Id.TenLoaiComment}
+            </td> -->
+            <td>${item.Comment.ThongTinKhachHang.HoTen}</td>
+            <td>${item.Comment.NoiDung | formatCommentforLength}</td>
+            <td>${item.TenNVCSTiepNhan =="" ? "Không có":item.TenNVCSTiepNhan}</td>
+            <td></td>
+            <td>${item.Comment.TrangThai.TenTrangThai}</td>
+            <td></td>
+            <td class="row-actions">
+              <a href="#" click.delegate="runUpdate(item)"><i class="os-icon os-icon-pencil-2"></i></a>
+
+              <!-- <a class="danger" href=""><i class="os-icon os-icon-database-remove"></i></a> -->
+            </td>
+      
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="controls-below-table">
+
+        <div class="table-records-pages">
+          <aut-pagination filter-ref.bind="filter" changed.delegate="paginationChanged($event)" current-page.bind="currentPage" page-size.bind="pageSize"
+            total-items.bind="itemsCount" pagination-size.bind="5">
+          </aut-pagination>
+        </div>
+
+
+        <div class="table-records-info">
+          <form class="form-inline">
+            <label for="pageSize">Số hàng : &nbsp;&nbsp;</label>
+            <select value.bind="pageSize" id="pageSize" class="form-control form-control-sm">
+                <option model.bind="5">5</option>
+                <option selected model.bind="10">10</option>
+                <option model.bind="20">20</option>
+                <option model.bind="50">50</option>
+              </select>
+          </form>
+        </div>
+
+      </div>
+
+
+    </loader>
+
+
+  </div>
+
+
+
+</template>

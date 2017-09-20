@@ -1,0 +1,162 @@
+<template>
+
+
+    <div class="element-box"><h5 class="form-header">Điều kiện tìm kiếm</h5>
+
+      <form class="formFilter">
+
+        <div class="formFilter-block">
+
+          <div class="form-group">
+            <label for="">Img</label>
+            <input class="form-control" placeholder="Img" type="text" value.bind="filter.where.img">
+          </div>
+
+          <div class="form-group">
+            <label for="">Position</label>
+            <input class="form-control" placeholder="Position" type="text" value.bind="filter.where.position">
+          </div>
+
+          <div class="form-group">
+            <label for="">Select</label>
+            <select class="form-control ">
+              <option selected="selected" value="">Select Status</option>
+              <option value="Pending">Pending</option>
+              <option value="Active">Active</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+
+        </div>
+
+
+        <div class="formFilter-block">
+
+          <div class="form-group">
+            <label for="">VD text input</label>
+            <input class="form-control" placeholder="" type="text">
+          </div>
+
+          <div class="form-group"><label for=""> VD Select Input</label><select class="form-control">
+            <option>Select State</option>
+            <option>New York</option>
+            <option>California</option>
+            <option>Boston</option>
+            <option>Texas</option>
+            <option>Colorado</option>
+          </select></div>
+
+          <div class="form-group">
+            <label for="">VD Select 2 input</label>
+            <select select2="c-data.bind : users ; c-text :login ; c-value:id "   value.bind="selectedValue"></select>
+          </div>
+
+
+        </div>
+
+
+        <div class="formFilter-block">
+
+          <div class="form-group">
+            <label for="">VD date input</label>
+            <div class="input-daterange input-group" daterangepickter >
+              <input type="text" class="input-sm form-control" name="start" value.bind="d.start" datepicker>
+              <span class="input-group-addon">to</span>
+              <input type="text" class="input-sm form-control" name="end" value.bind="d.end" datepicker>
+            </div>
+          </div>
+
+          <div class="form-group"><label for=""> VD Select Input</label><select class="form-control">
+            <option>Select State</option>
+            <option>New York</option>
+            <option>California</option>
+            <option>Boston</option>
+            <option>Texas</option>
+            <option>Colorado</option>
+          </select></div>
+
+
+
+        </div>
+
+        <div class="formFilter-block-search">
+
+          <button data-loading-text="Loading" btn-async="task.call:runFilter()" class="btn btn-primary mb-2"
+                  type="submit"> Tìm kiếm
+          </button>
+
+
+        </div>
+
+
+      </form>
+    </div>
+
+
+    <div class="element-box">
+      <h5 class="form-header">Kết quả tìm kiếm
+
+        <a class="btn btn-sm btn-primary ml-2 " href="#"
+           click.delegate="runCreate()">Tạo mới Banner</a>
+
+        <a class="btn btn-sm btn-success ml-2 " href="#"
+           click.delegate="runCreate()">Xuất Excel</a>
+
+      </h5>
+      <!--<div class="form-desc">Các lưu ý khi tạo banner mới</div>-->
+     
+
+      <loader async-task.bind="asyncTask">
+        <table class="table table-lightborder table-striped"
+               aurelia-table="data.bind: items; display-data.bind: $displayData; ">
+          <thead>
+          <tr>
+            <th>Img</th>
+            <th>Status</th>
+            <th>position</th>
+            <th class="text-center">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr repeat.for="item of $displayData">
+            <td>${item.Img}</td>
+            <td>${item.Status}</td>
+            <td>${item.Position}</td>
+            <td class="row-actions"><a href="#"><i class="os-icon os-icon-pencil-2"></i></a>
+              <a class="danger" href="#"><i class="os-icon os-icon-database-remove"></i></a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <div class="controls-below-table">
+
+          <div class="table-records-pages">
+            <aut-pagination filter-ref.bind="filter" changed.delegate="paginationChanged($event)"
+                            current-page.bind="currentPage" page-size.bind="pageSize"
+                            total-items.bind="itemsCount" pagination-size.bind="5">
+            </aut-pagination>
+          </div>
+
+
+          <div class="table-records-info">
+            <form class="form-inline">
+              <label for="pageSize">Số hàng : &nbsp;&nbsp;</label>
+              <select value.bind="pageSize" id="pageSize" class="form-control form-control-sm">
+                <option model.bind="5">5</option>
+                <option selected model.bind="10">10</option>
+                <option model.bind="20">20</option>
+                <option model.bind="50">50</option>
+              </select>
+            </form>
+          </div>
+
+        </div>
+
+      </loader>
+
+
+    </div>
+
+
+</template>

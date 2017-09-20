@@ -1,0 +1,310 @@
+<template>
+  <style>
+    ux-dialog-overlay.active {
+      background-color: black;
+      opacity: .5;
+    }
+  </style>
+  <ux-dialog>
+
+    <ux-dialog-body>
+
+
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Chi tiết bình luận</h5>
+            <a href="">asdasdasd</a>
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true"
+                                                                                              click.trigger="dialogcontroller.cancel()"> ×</span>
+            </button>
+          </div>
+          <div class="modal-body content-w">
+
+            <form submit.delegate="save()">
+
+              <div class="row">
+
+                <div class="col-md-6 col-xs-6 col-lg-6">
+                  <div class="element-wrapper pb-0">
+
+                    <div class="element-box">
+
+                      <h6 class="element-header">Thông tin comment</h6>
+
+                      <div class="form-group row"><label class="col-form-label col-sm-4" for=""> ID comment:</label>
+                        <div class="col-sm-8">
+                          <strong>${CommentDto.Comment.Id}</strong>
+                        </div>
+                      </div>
+                      <div class="form-group row"><label class="col-form-label col-sm-4" for="">Ngày comment:</label>
+                        <div class="col-sm-8">
+                          <strong>${CommentDto.Comment.NgayGioTao}</strong>
+                        </div>
+                      </div>
+                      <div class="form-group row"><label class="col-form-label col-sm-4" for="">Sản phẩm:</label>
+                        <div class="col-sm-8">
+
+                          <button class=" btn-link"><strong  href="https://vienthonga.vn/${entity.SP_URL}" target="_blank">${CommentDto.Comment.SP_TenSP==""?CommentDto.Comment.SP_URL:CommentDto.Comment.SP_TenSP}</strong></button>
+
+                        </div>
+                      </div>
+                      <div class="form-group row"><label class="col-form-label col-sm-4" for="">Người comment:</label>
+                        <div class="col-sm-8">
+                          <strong>${CommentDto.Comment.ThongTinKhachHang.HoTen}</strong>
+                        </div>
+                      </div>
+                      <div class="form-group row"><label class="col-form-label col-sm-4" for="">Email người
+                        comment:</label>
+                        <div class="col-sm-8">
+                          <strong>${CommentDto.Comment.ThongTinKhachHang.Email}</strong>
+                        </div>
+                      </div>
+                      <div class="form-group row"><label class="col-form-label col-sm-4" for="">Thời điểm nhận
+                        commnent:</label>
+                        <div class="col-sm-8">
+                          <strong>${CommentDto.Comment.NgayGioTao}</strong>
+                        </div>
+                      </div>
+                      <div class="form-group row"><label class="col-form-label col-sm-4" for="">Thời điểm Trả
+                        Lời:</label>
+                        <div class="col-sm-8">
+                          <strong>${CommentDto.NgayGioTraLoi=="Invalid
+                            date"?"":CommentDto.NgayGioTraLoi}</strong>
+                        </div>
+                      </div>
+
+
+                      <div class="form-group row">
+                        <label class="col-form-label col-sm-4" for="">Nhân Viên CS Tiếp Nhận:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control m-t-2" value.bind="CommentDto.MaNVCSTiepNhan">
+                            <option value="">Tất cả</option>
+                            <option repeat.for="item of nhanVienCS" model.bind="item.MaNV">${item.TenNV}</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label class="col-form-label col-sm-4" for="">Nhân Viên SO Tiếp Nhận:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control" value.bind="CommentDto.MaNVSOTiepNhan">
+                            <option value="">Tất cả</option>
+                            <option repeat.for="item of nhanVienSO" model.bind="item.MaNV">${item.TenNV}</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <br>
+
+
+                      <h6 class="element-header">Phân loại comment</h6>
+                      <div class="form-group row">
+                        <label class="col-form-label col-sm-4" for="">Loại Comment:</label>
+                        <div class="col-sm-8">
+                          <select id="TrangThaiCommentid" class="form-control" value.bind="CommentDto.Comment.CM_LoaiCommentLevel1Id" change.trigger="loaiLv1()">
+                            <option value="">(Chưa phân loại)</option>
+                            <option repeat.for="item of listLoaiCmt" model.bind="item.Id">${item.TenLoaiComment}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-form-label col-sm-4" for="">Loại comment cấp 1:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control" value.bind="CommentDto.Comment.CM_LoaiCommentLevel2Id" disabled.bind="Disablecmblv1" change.trigger="loaiLv2()">
+                            <option value="">Chọn loại comment cấp 1</option>
+                            <option repeat.for="item of listLoaicmtlv1" model.bind="item.Id">${item.TenLoaiComment}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-form-label col-sm-4" for="">Loại comment cấp 2:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control" value.bind="CommentDto.Comment.CM_LoaiCommentLevel3Id" disabled.bind="Disablecmblv2" change.trigger="loaiLv3()">
+                            <option value="">Chọn loại comment cấp 2</option>
+                            <option repeat.for="item of listLoaicmtlv2" model.bind="item.Id">${item.TenLoaiComment}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-form-label col-sm-4" for="">Loại comment cấp 3:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control" value.bind="CommentDto.Comment.CM_LoaiCommentLevel4Id" disabled.bind="Disablecmblv3" change.trigger="loaiLv4()">
+                            <option value="">Chọn loại comment cấp 3</option>
+                            <option repeat.for="item of listLoaicmtlv3" model.bind="item.Id">${item.TenLoaiComment}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-form-label col-sm-4" for="">Trạng thái comment:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control" value.bind="CommentDto.Comment.CM_TrangThaiId">
+                            <option value="">Tất cả</option>
+                            <option repeat.for="item of ttComment" model.bind="item.Id">${item.TenTrangThai}</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <br>
+
+
+                      <h6 class="element-header">Chọn hiển thị</h6>
+
+
+                      <div class="form-check">
+
+                        <label class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" checked.bind="true">
+                          <span class="custom-control-indicator"></span>
+                          <span class="custom-control-description">Chọn hiển thị ở mục
+                        <strong>ĐÁNH GIÁ</strong></span>
+                        </label>
+
+
+                      </div>
+
+                      <div class="form-buttons-w text-right">
+                        <button class="btn btn-primary" type="button" click.delegate="UpdateComment()" >Cập nhật</button>
+                      </div>
+
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6 col-xs-6 col-lg-6">
+                  <div class="element-wrapper pb-0">
+                    <div class="element-box">
+                      <h6 class="element-header">Đánh giá của quản lý</h6>
+                      <div class="form-group row"><label class="col-form-label col-sm-4" for="">Chọn mức điểm đánh
+                        giá:</label>
+                        <div class="col-sm-5">
+                          <select class="form-control" value.bind="CommentDto.DiemDanhGia">
+                            <option value="">Tất cả</option>
+                            <option model.bind="0">0</option>
+                            <option model.bind="1">1</option>
+                            <option model.bind="2">2</option>
+                            <option model.bind="3">3</option>
+                            <option model.bind="4">4</option>
+                            <option model.bind="5">5</option>
+                            <option model.bind="6">6</option>
+                            <option model.bind="7">7</option>
+                            <option model.bind="8">8</option>
+                            <option model.bind="9">9</option>
+                            <option model.bind="10">10</option>
+                          </select>
+                        </div>
+                        <div class="col-sm-3 ">
+                          <button type="submit" class="btn btn-primary">Đánh giá</button>
+                        </div>
+                      </div>
+
+
+                      <br>
+                      <h6 class="element-header">Nội dung comments</h6>
+
+
+                      <div class="full-chat-w">
+                        <div class="full-chat-i">
+                          <div class="full-chat-left">
+
+
+                            <div class="full-chat-middle">
+                              <div class="chat-content-w">
+                                <div class="chat-content">
+                                  <div class="chat-message">
+                                    <div class="chat-message-content-w">
+                                      <div class="chat-message-content">
+                                        <p innerhtml.bind=CommentDto.Comment.NoiDung></p>
+                                      </div>
+                                    </div>
+                                    <div class="chat-message-avatar"><img alt="" src="http://light.pinsupreme.com/img/avatar1.jpg">
+                                    </div>
+                                    <div class="chat-message-date"><strong>Khách hàng hỏi:</strong>
+
+
+                                    </div>
+                                  </div>
+                                  <loader async-task.bind="asyncTask">
+                                    <div repeat.for="rep of ListReplies">
+                                      <div class="chat-message" show.bind="rep.TypeQuanTri === 'F'">
+                                        <div class="chat-message-content-w">
+                                          <div class="chat-message-content">
+                                            <p innerhtml.bind=rep.NoiDung></p>
+                                          </div>
+                                        </div>
+                                        <div class="chat-message-avatar"><img alt="" src="http://light.pinsupreme.com/img/avatar1.jpg">
+                                        </div>
+                                        <div class="chat-message-date" show.bind="rep.TypeQuanTri === 'F'"><strong>Khách hàng hỏi:</strong> -${rep.CreateDateTime }
+
+
+                                        </div>
+                                      </div>
+
+
+                                      <div class="chat-message self" show.bind="rep.TypeQuanTri === 'T'">
+                                        <div class="chat-message-content-w">
+                                          <div class="chat-message-content">
+                                            <p innerhtml.bind=rep.NoiDung></p>
+                                          </div>
+                                        </div>
+                                        <div class="chat-message-date">
+                                          <button class=" btn-link"> Ẩn</button>
+                                          <button class=" btn-link" click.delegate="$parent.Editcomment(rep)">Sửa</button>                                          -
+                                          <strong>Viễn thông A phản hồi</strong> -${rep.CreateDateTime }
+                                        </div>
+                                        <div class="chat-message-avatar" show.bind="rep.TypeQuanTri === 'T'">><img alt="" src="${rep.AvatarQTV}">
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                  </loader>
+                                </div>
+
+                              </div>
+                            </div>
+                         
+                            <div class="chat-controls">
+                              <!-- <div class="chat-input"><input placeholder="Nhập nội dung phản hồi..." type="text">
+                                </div> -->
+                                <textarea ckeditor="instance.bind: commentControl ; config.bind : ckConfig" value.bind="ckEditorValue">
+                                </textarea>
+                              <!-- <div class="chat-input-extra">
+                                  <div class="chat-extra-actions">
+                                  </div>
+                                   <div class="chat-btn">
+                                    <button class="btn btn-primary btn-sm">Phản hồi</button>
+                                  </div> 
+                                </div>  -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" click.trigger="dialogcontroller.cancel()"> Đóng</button>
+            <button class="btn btn-primary" type="button" disabled.bind="Disableso" click.delegate="test()"> Chuyển SO
+            </button>
+            <button class="btn btn-primary" type="button" disabled.bind="Disablecmluucmt" if.bind="isEdit" click.delegate="phanhoi()">
+              ${isEdit==true?"Phản hồi":"Lưu comment"}
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </ux-dialog-body>
+  </ux-dialog>
+
+</template>

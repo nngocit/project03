@@ -1,0 +1,135 @@
+<template>
+
+  <div class="all-wrapper menu-top">
+    <div class="layout-w">
+
+      <div class=" desktop-menu menu-top-w menu-activated-on-hover">
+        <div class="menu-top-i">
+          <div class="logo-w"><a class="logo" href="/"><img
+                        src="https://assets.vienthonga.vn/images/logo-vta.png"></a></div>
+          <ul class="main-menu">
+
+            <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
+              <a href.bind="row.href" class="">
+                <div class="icon-w">
+                  <div class="os-icon os-icon-window-content"></div>
+                </div>
+
+                <span class="title">${row.title}</span>
+                
+              </a>
+
+              <!-- <span class="icon-thumbnail "><i class="${row.settings.icon}"></i></span> -->
+            </li>
+
+
+            <li class="has-sub-menu">
+              <a href="http://light.pinsupreme.com/index.html">
+                <div class="icon-w">
+                  <div class="os-icon os-icon-window-content"></div>
+                </div>
+                <span>Dashboard</span></a>
+              <ul class="sub-menu">
+                <li><a href="http://light.pinsupreme.com/index.html">Dashboard 1</a></li>
+              </ul>
+            </li>
+            <li class="has-sub-menu">
+              <a href="layouts_menu_top.html#">
+                <div class="icon-w">
+                  <div class="os-icon os-icon-hierarchy-structure-2"></div>
+                </div>
+                <span>Menu Styles</span></a>
+              <ul class="sub-menu">
+                <li><a href="http://light.pinsupreme.com/layouts_menu_side.html">Side Menu Light</a></li>
+                <li><a href="http://light.pinsupreme.com/layouts_menu_side_dark.html">Side Menu Dark</a>
+                </li>
+
+              </ul>
+            </li>
+            <li class="has-sub-menu">
+              <a href="layouts_menu_top.html#">
+                <div class="icon-w">
+                  <div class="os-icon os-icon-delivery-box-2"></div>
+                </div>
+                <span>Applications</span></a>
+              <ul class="sub-menu">
+                <li><a href="http://light.pinsupreme.com/apps_email.html">Email Application</a></li>
+                <li><a href="http://light.pinsupreme.com/apps_projects.html">Projects List</a></li>
+
+              </ul>
+            </li>
+            <li class="has-sub-menu">
+              <a href="layouts_menu_top.html#">
+                <div class="icon-w">
+                  <div class="os-icon os-icon-newspaper"></div>
+                </div>
+                <span>Pages</span></a>
+              <ul class="sub-menu">
+                <li><a href="http://light.pinsupreme.com/misc_invoice.html">Invoice</a></li>
+
+                <li><a href="http://light.pinsupreme.com/misc_error_500.html">Error 500</a></li>
+              </ul>
+            </li>
+            <li class="has-sub-menu">
+              <a href="layouts_menu_top.html#">
+                <div class="icon-w">
+                  <div class="os-icon os-icon-pencil-12"></div>
+                </div>
+                <span>UI Kit</span></a>
+              <ul class="sub-menu">
+                <li><a href="http://light.pinsupreme.com/uikit_modals.html">Modals</a></li>
+
+              </ul>
+            </li>
+            <li class="has-sub-menu">
+              <a href="layouts_menu_top.html#">
+                <div class="icon-w">
+                  <div class="os-icon os-icon-user-male-circle"></div>
+                </div>
+                <span>Users</span></a>
+              <ul class="sub-menu">
+                <li><a href="http://light.pinsupreme.com/users_profile_big.html">Big Profile</a></li>
+                <li><a href="http://light.pinsupreme.com/users_profile_small.html">Compact Profile</a></li>
+              </ul>
+            </li>
+
+
+          </ul>
+          <div class="logged-user-w">
+            <div class="avatar-w"><img alt="" src="/assets/img/img/avatar1.jpg"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-w">
+        <!--------------------
+START - Breadcrumbs
+-------------------->
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="http://light.pinsupreme.com/index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="http://light.pinsupreme.com/index.html">Products</a></li>
+          <li class="breadcrumb-item"><span>Laptop with retina screen</span></li>
+        </ul>
+        <!--------------------
+END - Breadcrumbs
+-------------------->
+        <div class="content-i">
+          <div class="content-box">
+
+            <div class="row">
+              <div class="col-sm-12">
+                <router-view></router-view>
+
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</template>
